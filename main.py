@@ -108,7 +108,7 @@ def sendEmail(to, content):
 
 def screenshot():
     img = pyautogui.screenshot()
-    img.save("C:\\Users\\abhis\\Pictures\\New folder\\ss.png")
+    img.save("C:\\Users\\username\\Pictures\\New folder\\ss.png")#give directory of your own
 
 def cpu():
     usage = str(psutil.cpu_percent())
@@ -183,7 +183,7 @@ if __name__ == "__main__":
         elif "restart" in query:
             os.system("shutdown /r /t 1")
         elif "play songs" in query:
-            songs_dir = "C:\\Users\\abhis\\Dropbox\\My PC (DESKTOP-4PFR0L8)\\Desktop\\abhi\\audiobook\\Personal-Assistant\\Music playlist"
+            songs_dir = "C:\\Users\\username\\Dropbox\\My PC (DESKTOP-4PFR0L8)\\Desktop\\audiobook\\Personal-Assistant\\Music playlist"
             songs = os.listdir(songs_dir) # return the list of songs in that directory
             os.startfile(os.path.join(songs_dir, songs[0]))
         elif "remember that" in query:
