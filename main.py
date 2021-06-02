@@ -176,7 +176,7 @@ if __name__ == "__main__":
             wb.get(chromepath).open_new_tab(search + ".com")
         elif "logout" in query:
             os.system("shutdown -l")
-        elif "shutdown chesey" in query:
+        elif "shutdown" in query:
             keyboard.send("alt+F4, space")
             keyboard.send("enter")
             
