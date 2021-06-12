@@ -99,9 +99,9 @@ def sendEmail(to, content):
     server.starttls()
 
     # then we login to our account
-    server.login('snavneet561@gmail.com', 'singh@navneet01')
+    server.login('your gmail', 'your password')
 
-    server.sendmail('snavneet561@gmail.com', to, content)
+    server.sendmail('your gmail', to, content)
 
     # to close our session from smtplib
     server.close
