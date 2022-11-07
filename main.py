@@ -414,10 +414,8 @@ if __name__ == "__main__":
             counter = 0
         elif 'sublime' in query:
             npath = "C:\\Program Files\\Sublime Text 3\\sublime_text.exe"
-	    if os.path.exists(npath):
-			os.startfile(npath)
-	    else:
-		speak("sorry looks like app is bot installed on your pc")
+	    os.startfile(npath)
+	  
         elif 'open command prompt' in query:
             npath = "C:\\Windows\\system32\\cmd.exe"
             os.startfile(npath)
