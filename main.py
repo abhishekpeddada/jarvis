@@ -387,23 +387,23 @@ if __name__ == "__main__":
             webbrowser.open("youtube.com")
             counter = 0
         elif 'new tab' in query:
-            cords = pyautogui.locateCenterOnScreen('C:\\Users\\abhis\\Downloads\\Emotion_Detection_CNN-main\\pics\\newtab.png')
+            cords = pyautogui.locateCenterOnScreen('pics\\newtab.png')
             pyautogui.click(cords)
             counter = 0
         elif 'subscribe' in query:
-            cords = pyautogui.locateCenterOnScreen('C:\\Users\\abhis\\Downloads\\Emotion_Detection_CNN-main\\pics\\subscribe.png')
+            cords = pyautogui.locateCenterOnScreen('pics\\subscribe.png')
             pyautogui.click(cords)
             counter = 0
         elif 'like' in query:
-            cords = pyautogui.locateCenterOnScreen('C:\\Users\\abhis\\Downloads\\Emotion_Detection_CNN-main\\pics\\like.png')
+            cords = pyautogui.locateCenterOnScreen('pics\\like.png')
             pyautogui.click(cords)
             counter = 0
         elif 'dislike' in query:
-            cords = pyautogui.locateCenterOnScreen('C:\\Users\\abhis\\Downloads\\Emotion_Detection_CNN-main\\pics\\dislike.png')
+            cords = pyautogui.locateCenterOnScreen('pics\\dislike.png')
             pyautogui.click(cords)
             counter = 0
         elif 'captions' in query:
-            cords = pyautogui.locateCenterOnScreen('C:\\Users\\abhis\\Downloads\\Emotion_Detection_CNN-main\\pics\\captions.png')
+            cords = pyautogui.locateCenterOnScreen('pics\\captions.png')
             pyautogui.click(cords)
             counter = 0
         elif 'speak text' in query:
@@ -414,18 +414,21 @@ if __name__ == "__main__":
             counter = 0
         elif 'sublime' in query:
             npath = "C:\\Program Files\\Sublime Text 3\\sublime_text.exe"
-            os.startfile(npath)
+	    if os.path.exists(npath):
+			os.startfile(npath)
+	    else:
+		speak("sorry looks like app is bot installed on your pc")
         elif 'open command prompt' in query:
             npath = "C:\\Windows\\system32\\cmd.exe"
             os.startfile(npath)
         elif 'files' in query:
             keyboard.send('windows+E')
-        elif 'mail' in query:
-            pyautogui.click(891,1056)
-            counter = 0
-        elif 'notepad' in query:
-            pyautogui.click(655,1068)
-            counter = 0
+        #elif 'mail' in query:
+            #pyautogui.click(891,1056)
+            #counter = 0
+        #elif 'notepad' in query:
+            #pyautogui.click(655,1068)
+            #counter = 0
         elif 'search system' in query:
             pyautogui.click(245,1056)
             counter = 0
@@ -491,15 +494,15 @@ if __name__ == "__main__":
             os.system("shutdown /s")
             counter = 0
         elif 'decrease volume' in query:
-            os.system("C:\\Users\\abhis\\Downloads\\Emotion_Detection_CNN-main\\scripts\\nircmd.exe changesysvolume -13107")
+            os.system("scripts\\nircmd.exe changesysvolume -13107")
             counter = 0
         elif 'increase volume' in query:
-            os.system("C:\\Users\\abhis\\Downloads\\Emotion_Detection_CNN-main\\scripts\\nircmd.exe changesysvolume 13107")
+            os.system("scripts\\nircmd.exe changesysvolume 13107")
         elif 'mute' in query:
-            os.system("C:\\Users\\abhis\\Downloads\\Emotion_Detection_CNN-main\\scripts\\nircmd.exe mutesysvolume 2")
+            os.system("scripts\\nircmd.exe mutesysvolume 2")
             counter = 0
         elif 'unmute' in query:
-            os.system("C:\\Users\\abhis\\Downloads\\Emotion_Detection_CNN-main\\scripts\\nircmd.exe mutesysvolume 2")
+            os.system("scripts\\nircmd.exe mutesysvolume 2")
             counter = 0
         elif 'show running apps' in query:
             for proc in psutil.process_iter():
