@@ -39,6 +39,7 @@ install("keyboard")
 install("mouse")
 install("pynput")
 install("Pillow")
+install("pybluez2")
 
 from tensorflow.keras.preprocessing.image import load_img
 from time import sleep
@@ -338,6 +339,7 @@ def record_screen():
             break
     out.release()
     cv2.destroyAllWindows()
+
 def cpu():
     usage = str(psutil.cpu_percent())
     speak("CPU is at " + usage)
@@ -406,21 +408,6 @@ if __name__ == "__main__":
             speak("Here you go to Youtube\n")
             webbrowser.open("youtube.com")
             counter = 0
-        elif 'new tab' in query:
-            cords = pyautogui.locateCenterOnScreen('pics\\newtab.png')
-            pyautogui.click(cords)
-        elif 'subscribe' in query:
-            cords = pyautogui.locateCenterOnScreen('pics\\subscribe.png')
-            pyautogui.click(cords)
-        elif 'like' in query:
-            cords = pyautogui.locateCenterOnScreen('pics\\like.png')
-            pyautogui.click(cords)
-        elif 'dislike' in query:
-            cords = pyautogui.locateCenterOnScreen('pics\\dislike.png')
-            pyautogui.click(cords)
-        elif 'captions' in query:
-            cords = pyautogui.locateCenterOnScreen('pics\\captions.png')
-            pyautogui.click(cords)
         elif 'speak text' in query:
             text_on_screen()
             counter = 0
