@@ -2,6 +2,7 @@ import subprocess
 import sys
 import random
 counter=0
+from requests import get
 tasks = []
 def install(package):
     subprocess.check_call([sys.executable, "-m", "pip", "install", package])
@@ -346,7 +347,19 @@ def cpu():
     battery = psutil.sensors_battery()
     speak("Battery is at ") 
     speak(battery.percent)
-
+def news():
+    #search news api in google and generate your api key
+    MAIN_URL_= "https://newsapi.org/v2/top-headlines?sources=techcrunch&apiKey=YOUR API KEY"
+    MAIN_PAGE_ = get(MAIN_URL_).json()
+    articles = MAIN_PAGE_["articles"]
+    headings=[]
+    seq = ['first','second','third','fourth','fifth','sixth','seventh','eighth','ninth','tenth'] #If you need more than ten you can extend it in the list
+    for ar in articles:
+        headings.append(ar['title'])
+    for i in range(len(seq)):
+        print(f"todays {seq[i]} news is: {headings[i]}")
+        speak(f"todays {seq[i]} news is: {headings[i]}")
+    speak("sir I am done, I have read most of the latest news")
 def joke():
     speak(pyjokes.get_joke())
 def click_on_text(click_text):
@@ -439,6 +452,8 @@ if __name__ == "__main__":
         elif 'windows' in query:
             pyautogui.click(27,1045)
             counter = 0 
+        elif "news" in query:
+            news()
         elif 'open google' in query:
             speak("Here you go to Google\n")
             webbrowser.open("google.com")
