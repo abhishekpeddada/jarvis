@@ -1,3 +1,45 @@
+import subprocess
+import sys
+import random
+counter=0
+tasks = []
+def install(package):
+    subprocess.check_call([sys.executable, "-m", "pip", "install", package])
+install("SpeechRecognition")
+install("pyttsx3")
+install("pyaudio")
+import speech_recognition as sr
+import pyttsx3
+r = sr.Recognizer()
+engine = pyttsx3.init('sapi5')
+voices = engine.getProperty('voices')
+engine.setProperty('rate', 196)
+engine.setProperty('volume', 2.7)
+engine.setProperty('voice', voices[0].id)
+
+def speak(audio):
+    engine.say(audio)
+    engine.runAndWait() 
+
+
+speak("plese give me a minute to setup sir")
+install("tensorflow")
+install("keras")
+install("opencv-python")
+install("numpy")
+install("pytesseract")
+install("tkintertable")
+
+
+install("wikipedia")
+install("pyautogui")
+install("psutil")
+install("pyjokes")
+install("keyboard")
+install("mouse")
+install("pynput")
+install("Pillow")
+
 from tensorflow.keras.preprocessing.image import load_img
 from time import sleep
 from keras.models import load_model
@@ -11,9 +53,8 @@ from tkinter import *
 import requests
 
 #friday
-import pyttsx3 
+ 
 import datetime
-import speech_recognition as sr
 import wikipedia
 import smtplib
 import webbrowser as wb
@@ -36,44 +77,6 @@ import numpy as np
 
 from PIL import Image
 from pytesseract import pytesseract
-import subprocess
-import sys
-
-counter=0
-tasks = []
-def install(package):
-    subprocess.check_call([sys.executable, "-m", "pip", "install", package])
-install("SpeechRecognition")
-
-r = sr.Recognizer()
-engine = pyttsx3.init('sapi5')
-voices = engine.getProperty('voices')
-engine.setProperty('rate', 196)
-engine.setProperty('volume', 2.7)
-engine.setProperty('voice', voices[1].id)
-
-def speak(audio):
-    engine.say(audio)
-    engine.runAndWait() 
-
-
-speak("plese give me a minute to setup sir")
-install("tensorflow")
-install("keras")
-install("opencv-python")
-install("numpy")
-install("pytesseract")
-install("tkintertable")
-install("pyttsx3")
-
-install("wikipedia")
-install("pyautogui")
-install("psutil")
-install("pyjokes")
-install("keyboard")
-install("mouse")
-install("pynput")
-install("Pillow")
 instructions = '''instructions(make sure to close this window):
                 1.cpu
                 2.time
@@ -387,19 +390,19 @@ if __name__ == "__main__":
             webbrowser.open("youtube.com")
             counter = 0
         elif 'new tab' in query:
-            cords = pyautogui.locateCenterOnScreen('C:\\Users\\abhis\\Downloads\\Emotion_Detection_CNN-main\\pics\\newtab.png')
+            cords = pyautogui.locateCenterOnScreen('pics\\newtab.png')
             pyautogui.click(cords)
         elif 'subscribe' in query:
-            cords = pyautogui.locateCenterOnScreen('C:\\Users\\abhis\\Downloads\\Emotion_Detection_CNN-main\\pics\\subscribe.png')
+            cords = pyautogui.locateCenterOnScreen('pics\\subscribe.png')
             pyautogui.click(cords)
         elif 'like' in query:
-            cords = pyautogui.locateCenterOnScreen('C:\\Users\\abhis\\Downloads\\Emotion_Detection_CNN-main\\pics\\like.png')
+            cords = pyautogui.locateCenterOnScreen('pics\\like.png')
             pyautogui.click(cords)
         elif 'dislike' in query:
-            cords = pyautogui.locateCenterOnScreen('C:\\Users\\abhis\\Downloads\\Emotion_Detection_CNN-main\\pics\\dislike.png')
+            cords = pyautogui.locateCenterOnScreen('pics\\dislike.png')
             pyautogui.click(cords)
         elif 'captions' in query:
-            cords = pyautogui.locateCenterOnScreen('C:\\Users\\abhis\\Downloads\\Emotion_Detection_CNN-main\\pics\\captions.png')
+            cords = pyautogui.locateCenterOnScreen('pics\\captions.png')
             pyautogui.click(cords)
         elif 'speak text' in query:
             text_on_screen()
@@ -488,13 +491,13 @@ if __name__ == "__main__":
             os.system("shutdown /s")
             counter = 0
         elif 'decrease volume' in query:
-            os.system("C:\\Users\\abhis\\Downloads\\Emotion_Detection_CNN-main\\scripts\\nircmd.exe changesysvolume -13107")
+            os.system("scripts\\nircmd.exe changesysvolume -13107")
         elif 'increase volume' in query:
-            os.system("C:\\Users\\abhis\\Downloads\\Emotion_Detection_CNN-main\\scripts\\nircmd.exe changesysvolume 13107")
+            os.system("scripts\\nircmd.exe changesysvolume 13107")
         elif 'mute' in query:
-            os.system("C:\\Users\\abhis\\Downloads\\Emotion_Detection_CNN-main\\scripts\\nircmd.exe mutesysvolume 2")
+            os.system("scripts\\nircmd.exe mutesysvolume 2")
         elif 'unmute' in query:
-            os.system("C:\\Users\\abhis\\Downloads\\Emotion_Detection_CNN-main\\scripts\\nircmd.exe mutesysvolume 2")
+            os.system("scripts\\nircmd.exe mutesysvolume 2")
         elif 'show running apps' in query:
             for proc in psutil.process_iter():
                 try:
