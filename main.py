@@ -571,12 +571,20 @@ if __name__ == "__main__":
 
             speak("For how many minutes?")
             timesec = takeCommand()
-            timesec = timesec.replace('minutes', '')
-            timesec = timesec.replace('minute', '')
-            timesec = timesec.replace('for', '')
-            timesec = float(timesec)
-            timesec = timesec * 60
-            speak(f'I will remind you in {timesec} seconds')
+            l = timesec.split()
+            if "seconds" in l or "second" in l:
+                timesec = timesec.replace('seconds','')
+                timesec = timesec.replace('second','')
+                timesec = timesec.replace('for','')
+                timesec = float(timesec)
+                speak(f'I will remind you in {timesec} seconds')
+            else:
+                timesec = timesec.replace('minutes', '')
+                timesec = timesec.replace('minute', '')
+                timesec = timesec.replace('for', '')
+                timesec = float(timesec)
+                timesec = timesec * 60
+                speak(f'I will remind you in {timesec} seconds')
 
             sleep(timesec)
             speak('Your time has been finished sir')
