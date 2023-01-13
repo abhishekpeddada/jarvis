@@ -420,6 +420,8 @@ if __name__ == "__main__":
                 os.startfile(npath)
             else:
                 speak("looks like app is not installed on your pc")
+        elif 'privacy mode' in query:
+            os.startfile("blue1.exe")
         elif 'open command prompt' in query:
             npath = "C:\\Windows\\system32\\cmd.exe"
             os.startfile(npath)
