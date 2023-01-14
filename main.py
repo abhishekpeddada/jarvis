@@ -23,15 +23,15 @@ def speak(audio):
     engine.runAndWait() 
 
 
-speak("plese give me a minute to setup sir")
+speak("checking requirements")
 install("tensorflow")
 install("keras")
 install("opencv-python")
 install("numpy")
 install("pytesseract")
 install("tkintertable")
-
-
+install("pywikihow")
+install("beautifulsoup4")
 install("wikipedia")
 install("pyautogui")
 install("psutil")
@@ -41,6 +41,7 @@ install("mouse")
 install("pynput")
 install("Pillow")
 install("pybluez2")
+install("PyPDF2")
 
 from tensorflow.keras.preprocessing.image import load_img
 from time import sleep
@@ -66,9 +67,10 @@ import psutil
 import pyjokes
 import keyboard
 import mouse
+import PyPDF2
 import webbrowser
 from pynput.mouse import Listener, Button, Controller
-
+from pywikihow import search_wikihow
 import pytesseract
 from pytesseract import pytesseract
 import PIL
@@ -76,7 +78,7 @@ from PIL import Image
 import cv2
 import csv
 import numpy as np
-
+from bs4 import BeautifulSoup
 from PIL import Image
 from pytesseract import pytesseract
 instructions = '''instructions(make sure to close this window):
@@ -253,6 +255,37 @@ def date():
     month = convertMonth(month)
     speak("The current date is")
     speak(day+month+year)
+def temperature():
+    IP_Address = get('https://api.ipify.org').text
+    url = 'https://get.geojs.io/v1/ip/geo/'+IP_Address+'.json'
+    geo_reqeust = get(url)
+    geo_data = geo_reqeust.json()
+    city = geo_data['city']
+    search = f"temperature in {city}"
+    url_1 = f"https://www.google.com/search?q={search}"
+    r = get(url_1)
+    data = BeautifulSoup(r.text,"html.parser")
+    temp = data.find("div",class_="BNeawe").text
+    print(temp)
+    speak(str(temp)+"centigrade,"+"sir")
+    
+def How():
+    speak("How to do mode is is activated")
+    while True:
+        speak("Please tell me what you want to know")
+        how = takeCommand()
+        try:
+            if ("exit" in how) or("close" in how):
+                speak("Ok sir how to mode is closed")
+                break
+            else:
+                max_result=1
+                how_to = search_wikihow(how,max_result)
+                assert len(how_to) == 1
+                how_to[0].print()
+                speak(how_to[0].summary)
+        except Exception as e:
+            speak("Sorry sir, I am not able to find this")
 
 def wishMe():
     if s=="Neutral":
@@ -347,6 +380,26 @@ def cpu():
     battery = psutil.sensors_battery()
     speak("Battery is at ") 
     speak(battery.percent)
+
+#PDF reader
+def pdf_reader():
+    try:
+        speak("sir enter the path of the book which you want to read")
+        n = input("Enter the book name: ")
+        n = n.strip()+".pdf"
+        book_n = open(n,'rb')
+        pdfReader = PyPDF2.PdfReader(book_n)
+        pages =  len(pdfReader.pages)
+        speak(f"sir there are total of {pages} in this book")
+        speak("please enter the page number Which I nedd to read")
+        num = int(input("Enter the page number: "))
+        page = pdfReader.pages[num]
+        
+        text = page.extractText()
+        print(text)
+        speak(text)
+    except:
+        speak("something wrong happened.....")
 def news():
     #search news api in google and generate your api key
     MAIN_URL_= "https://newsapi.org/v2/top-headlines?sources=techcrunch&apiKey=YOUR API KEY"
@@ -479,7 +532,8 @@ if __name__ == "__main__":
             show_instructions()
             counter = 0
 
-        
+        elif "how" in query:
+            How()
 
         
         elif 'thanks' in query or 'thank you' in query:
@@ -510,6 +564,8 @@ if __name__ == "__main__":
             counter = 0
         elif "logout" in query:
             os.system("shutdown -l")
+        elif "temperature" in query:
+            temperature()
         elif "shutdown" in query:
             os.system("shutdown /s")
             counter = 0
@@ -521,6 +577,8 @@ if __name__ == "__main__":
             os.system("scripts\\nircmd.exe mutesysvolume 2")
         elif 'unmute' in query:
             os.system("scripts\\nircmd.exe mutesysvolume 2")
+        elif "pdf" in query:
+            pdf_reader()
         elif 'show running apps' in query:
             for proc in psutil.process_iter():
                 try:
