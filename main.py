@@ -36,7 +36,7 @@ def check_requirements():
         install("face-recognition")
         install("SpeechRecognition")
         install("pyttsx3")
-        install("pyaudio")
+        install("pyaudio")    
         replaced_content = ""
         line = myline.strip()
         new_line = line.replace("0", "1")
@@ -441,13 +441,13 @@ def kill_task(kill,l):
 if __name__ == "__main__":
     check_requirements()
     speak("authenticating face, please wait..")
+
     try:
         if facelock():
             speak("authenticated successfully")
             speak("welcome back sir")
             speak("say show instructions to know what i can do")
             while True:
-
                 query = takeCommand().lower()
                 if "time" in query:
                     time()
@@ -727,7 +727,7 @@ if __name__ == "__main__":
                 if counter>10:
                     speak("say something sir")
                     counter = 0
-            else:
-                speak("sorry authentication failed")
+        else:
+            speak("sorry authentication failed")
     except Exception as e:
         print(e)
