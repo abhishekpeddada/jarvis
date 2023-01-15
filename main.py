@@ -41,6 +41,7 @@ install("mouse")
 install("pynput")
 install("Pillow")
 install("pybluez2")
+install("pywhatkit")
 install("PyPDF2")
 
 from tensorflow.keras.preprocessing.image import load_img
@@ -81,6 +82,7 @@ import numpy as np
 from bs4 import BeautifulSoup
 from PIL import Image
 from pytesseract import pytesseract
+import pywhatkit as kit
 instructions = '''instructions(make sure to close this window):
                 1.cpu
                 2.time
@@ -268,7 +270,36 @@ def temperature():
     temp = data.find("div",class_="BNeawe").text
     print(temp)
     speak(str(temp)+"centigrade,"+"sir")
-    
+
+def send_whatsapp_message(inp_command, *arg, **kwargs):
+    speak("make sure you was logged into whatsapp web")
+    country_code ="+91"
+    try:
+        h = open('contacts.txt', 'r')
+    except:
+        speak("contacts file not found")
+
+    number = 0
+    flag = False
+    content = h.readlines()
+    speak("tell me the name of receiver")
+    name = takeCommand().lower()
+    for line in content:
+        if line.startswith(name):
+            number = int(line[line.index(':')+1:len(line)-1])
+            print(number)
+            flag = True
+    if not flag:
+        speak("contact not found")
+        return
+            
+    speak("what message you want to send")
+    message = takeCommand()
+    speak("Sending message...")
+    kit.sendwhatmsg_instantly(f"{country_code}{number}", message, wait_time=20)
+    keyboard.send("enter")
+    speak("Message sent successfully!")
+   
 def How():
     speak("How to do mode is is activated")
     while True:
@@ -543,7 +574,8 @@ if __name__ == "__main__":
         elif 'later' in query:
             speak('Bye sir, see you next time')
             quit()
-        
+        elif "send whatsapp message" in query:
+            send_whatsapp_message("+91")
         elif "send email" in query:
             try:
                 speak("What message should I send?")
