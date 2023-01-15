@@ -10,9 +10,10 @@ def check_requirements():
 
     f = open("check.txt", "r")
     myline = f.readline()
-    print(myline)
+    print(myline,type(myline))
     x = myline
-    if x=='0':
+    print(x)
+    if(not int(x)):
         speak("checking requirements")
         install("tensorflow")
         install("keras")
@@ -36,7 +37,7 @@ def check_requirements():
         install("face-recognition")
         install("SpeechRecognition")
         install("pyttsx3")
-        install("pyaudio")    
+        install("pyaudio") 
         replaced_content = ""
         line = myline.strip()
         new_line = line.replace("0", "1")
