@@ -6,9 +6,46 @@ from requests import get
 tasks = []
 def install(package):
     subprocess.check_call([sys.executable, "-m", "pip", "install", package])
-install("SpeechRecognition")
-install("pyttsx3")
-install("pyaudio")
+def check_requirements():
+
+    f = open("check.txt", "r")
+    myline = f.readline()
+    print(myline)
+    x = myline
+    if x=='0':
+        speak("checking requirements")
+        install("tensorflow")
+        install("keras")
+        install("opencv-python")
+        install("numpy")
+        install("pytesseract")
+        install("tkintertable")
+        install("pywikihow")
+        install("beautifulsoup4")
+        install("wikipedia")
+        install("pyautogui")
+        install("psutil")
+        install("pyjokes")
+        install("keyboard")
+        install("mouse")
+        install("pynput")
+        install("Pillow")
+        install("pybluez2")
+        install("pywhatkit")
+        install("PyPDF2")
+        install("face-recognition")
+        install("SpeechRecognition")
+        install("pyttsx3")
+        install("pyaudio")
+        replaced_content = ""
+        line = myline.strip()
+        new_line = line.replace("0", "1")
+        replaced_content = replaced_content + new_line + "\n"
+        write_file = open("check.txt", "w")
+        write_file.write(replaced_content)
+        write_file.close()
+    f.close()
+
 import speech_recognition as sr
 import pyttsx3
 r = sr.Recognizer()
@@ -22,40 +59,15 @@ def speak(audio):
     engine.say(audio)
     engine.runAndWait() 
 
-
-speak("checking requirements")
-install("tensorflow")
-install("keras")
-install("opencv-python")
-install("numpy")
-install("pytesseract")
-install("tkintertable")
-install("pywikihow")
-install("beautifulsoup4")
-install("wikipedia")
-install("pyautogui")
-install("psutil")
-install("pyjokes")
-install("keyboard")
-install("mouse")
-install("pynput")
-install("Pillow")
-install("pybluez2")
-install("pywhatkit")
-install("PyPDF2")
-
-from tensorflow.keras.preprocessing.image import load_img
 from time import sleep
-from keras.models import load_model
-from tensorflow.keras.utils import img_to_array
-from keras.preprocessing import image
+
 import cv2
 import numpy as np
 from pytesseract import Output
 from tkinter import filedialog
 from tkinter import *
 import requests
-
+import face_recognition
 #friday
  
 import datetime
@@ -141,64 +153,7 @@ instructions = '''instructions(make sure to close this window):
                 50.show desktop(to minimize all windows)
                 51.open this'''
 
-if os.path.exists("haarcascade_frontalface_default.xml"):
-    face_classifier = cv2.CascadeClassifier(r'haarcascade_frontalface_default.xml')
-else:
-    speak("please download this file and paste in folder where this executable is in and run again")
-    wb.open("https://drive.google.com/file/d/1rzC184u3Txj-bbs05Rui4AzR1i7eEbNZ/view?usp=sharing")
-if os.path.exists("model.h5"):
-    classifier =load_model(r'model.h5')
-else:
-    speak("please download this file and paste in folder where this executable is in and run again")
-    wb.open("https://drive.google.com/file/d/1ramzzIgAI75NEGMX2BZWBOAN995djit9/view?usp=sharing")
 
-emotion_labels = ['Angry','Disgust','Fear','Happy','Neutral', 'Sad', 'Surprise']
-
-cap = cv2.VideoCapture(0)
-
-i = 0
-tasks = {}
-l = []
-while i<10:
-    _, frame = cap.read()
-    gray = cv2.cvtColor(frame,cv2.COLOR_BGR2GRAY)
-    faces = face_classifier.detectMultiScale(gray)
-    i=i+1
-    label = ""
-    for (x,y,w,h) in faces:
-        cv2.rectangle(frame,(x,y),(x+w,y+h),(0,255,255),2)
-        roi_gray = gray[y:y+h,x:x+w]
-        roi_gray = cv2.resize(roi_gray,(48,48),interpolation=cv2.INTER_AREA)
-
-
-
-        if np.sum([roi_gray])!=0:
-            roi = roi_gray.astype('float')/255.0
-            roi = img_to_array(roi)
-            roi = np.expand_dims(roi,axis=0)
-
-            prediction = classifier.predict(roi)[0]
-            label=emotion_labels[prediction.argmax()]
-            label_position = (x,y)
-			
-            cv2.putText(frame,label,label_position,cv2.FONT_HERSHEY_SIMPLEX,1,(0,255,0),2)
-        else:
-            cv2.putText(frame,'No Faces',(30,80),cv2.FONT_HERSHEY_SIMPLEX,1,(0,255,0),2)
-    print(label)
-    sleep(2)
-    l.append(label)
-    if cv2.waitKey(1) & 0xFF == ord('q'):
-        break
-print(l)
-s = ""
-maxi = -1
-for i in l:
-    if l.count(i) >maxi:
-        maxi = l.count(i)
-        s = i
-print(s)
-cap.release()
-cv2.destroyAllWindows()
 
 #friday
 Mouse = Controller()
@@ -306,7 +261,7 @@ def How():
         speak("Please tell me what you want to know")
         how = takeCommand()
         try:
-            if ("exit" in how) or("close" in how):
+            if ("exit" in how) or("close" in how) or(" " in how) or ("" in how):
                 speak("Ok sir how to mode is closed")
                 break
             else:
@@ -318,32 +273,6 @@ def How():
         except Exception as e:
             speak("Sorry sir, I am not able to find this")
 
-def wishMe():
-    if s=="Neutral":
-        speak("friday at your sevice sir")
-    elif s == "Happy":
-        speak("you are in happy mood is there any reason sir")
-        data = takeCommand()
-        
-        remember = open("happy.txt", "w")
-        remember.write(data)
-        remember.close()
-        if "nothing" in data:
-            speak("ok sir")
-        else:
-            speak("so the reason is " + data)
-            speak("wow sir share this happy news with every one")
-    else:
-        speak("you are not in good mood what happed sir")
-        data = takeCommand()
-        remember = open("sad.txt", "w")
-        remember.write(data)
-        remember.close()
-        if "nothing" in data:
-            speak("ok sir")
-        else:
-            speak("so the reason is " + data)
-            speak("dont worry sir it is just a bad day not bad life!")
 
 def takeCommand():
     try: 
@@ -361,6 +290,30 @@ def takeCommand():
         return "None"
 
     return query
+def facelock(): 
+    camera = cv2.VideoCapture(0)
+    for i in range(20):
+        return_value, image = camera.read()
+        cv2.imwrite('1.jpg', image)
+    cv2.destroyAllWindows()
+    imgElon = face_recognition.load_image_file('2.jpg')
+    imgElon = cv2.cvtColor(imgElon,cv2.COLOR_BGR2RGB)
+    imgTest = face_recognition.load_image_file('1.jpg')
+    imgTest = cv2.cvtColor(imgTest,cv2.COLOR_BGR2RGB)
+    
+    faceLoc = face_recognition.face_locations(imgElon)[0]
+    encodeElon = face_recognition.face_encodings(imgElon)[0]
+    cv2.rectangle(imgElon,(faceLoc[3],faceLoc[0]),(faceLoc[1],faceLoc[2]),(255,0,255),2)
+    
+    faceLocTest = face_recognition.face_locations(imgTest)[0]
+    encodeTest = face_recognition.face_encodings(imgTest)[0]
+    cv2.rectangle(imgTest,(faceLocTest[3],faceLocTest[0]),(faceLocTest[1],faceLocTest[2]),(255,0,255),2)
+    
+    results = face_recognition.compare_faces([encodeElon],encodeTest)
+    faceDis = face_recognition.face_distance([encodeElon],encodeTest)
+    cv2.putText(imgTest,f'{results} {round(faceDis[0],2)}',(50,50),cv2.FONT_HERSHEY_COMPLEX,1,(0,0,255),2)
+    cv2.waitKey(0)
+    return results[0]
 
 def sendEmail(to, content):
     server = smtplib.SMTP('smtp.gmail.com', 587) # as gmail usually uses 587 port
@@ -486,301 +439,295 @@ def kill_task(kill,l):
 
 
 if __name__ == "__main__":
-    wishMe()
-    speak("say show instructions to know what i can do")
-    while True:
-        query = takeCommand().lower()
-        if "time" in query:
-            time()
-            counter = 0
-        elif 'wikipedia' in query:
-            speak('Searching Wikipedia...')
-            query = query.replace("wikipedia", "")
-            results = wikipedia.summary(query, sentences = 3)
-            speak("According to Wikipedia")
-            print(results)
-            speak(results)
-            counter = 0
-        elif 'open youtube' in query:
-            speak("Here you go to Youtube\n")
-            webbrowser.open("youtube.com")
-            counter = 0
-        elif 'speak text' in query:
-            text_on_screen()
-            counter = 0
-        elif 'notifications' in query:
-            pyautogui.click(1873,1046)
-            counter = 0
-        elif 'sublime' in query:
-            npath = "C:\\Program Files\\Sublime Text 3\\sublime_text.exe"
-            if os.path.exists(npath):
-                os.startfile(npath)
+    check_requirements()
+    speak("authenticating face, please wait..")
+    try:
+        if facelock():
+            speak("authenticated successfully")
+            speak("welcome back sir")
+            speak("say show instructions to know what i can do")
+            while True:
+
+                query = takeCommand().lower()
+                if "time" in query:
+                    time()
+                    counter = 0
+                elif 'wikipedia' in query:
+                    speak('Searching Wikipedia...')
+                    query = query.replace("wikipedia", "")
+                    results = wikipedia.summary(query, sentences = 3)
+                    speak("According to Wikipedia")
+                    print(results)
+                    speak(results)
+                    counter = 0
+                elif 'open youtube' in query:
+                    speak("Here you go to Youtube\n")
+                    webbrowser.open("youtube.com")
+                    counter = 0
+                elif 'speak text' in query:
+                    text_on_screen()
+                    counter = 0
+                elif 'notifications' in query:
+                    pyautogui.click(1873,1046)
+                    counter = 0
+                elif 'sublime' in query:
+                    npath = "C:\\Program Files\\Sublime Text 3\\sublime_text.exe"
+                    if os.path.exists(npath):
+                        os.startfile(npath)
+                    else:
+                        speak("looks like app is not installed on your pc")
+                elif 'privacy mode' in query:
+                    speak("turning on privacy mode")
+                    os.startfile("blue1.exe")
+                elif 'open command prompt' in query:
+                    npath = "C:\\Windows\\system32\\cmd.exe"
+                    os.startfile(npath)
+                elif 'files' in query:
+                    keyboard.send('windows+E')
+                elif 'search system' in query:
+                    keyboard.send("windows+s")
+                elif 'windows' in query:
+                    keyboard.send("windows","space")
+                elif "news" in query:
+                    news()
+                elif 'open google' in query:
+                    speak("Here you go to Google\n")
+                    webbrowser.open("google.com")
+                    counter = 0
+                elif "date" in query:
+                    date()
+                    counter = 0
+                elif "record screen" in query:
+                    record_screen()
+                elif 'type text' in query:
+                    speak('what shoud i type?')
+                    cmd = takeCommand()
+                    pyautogui.write(cmd)
+                    counter = 0
+                elif 'show instructions' in query:
+                    show_instructions()
+                    counter = 0
+                elif "how to" in query:
+                    How()
+
+                    
+                elif 'thanks' in query or 'thank you' in query:
+                    speak('I am happy I could help you')
+                    counter = 0
+                    
+                elif 'later' in query:
+                    speak('Bye sir, see you next time')
+                    quit()
+                elif "send whatsapp message" in query:
+                    send_whatsapp_message("+91")
+                elif "send email" in query:
+                    try:
+                        speak("What message should I send?")
+                        content = takeCommand()
+                        speak("Please tell the email ID of the receiver")
+                        to = takeCommand()
+                        sendEmail(to, content)
+                        speak("Email has been sent!!")
+                        counter = 0
+                    except Exception as e:
+                        print(e)
+                            
+                elif "google search" in query:
+                    speak("What should I search?")
+                    chromepath = "C:/Program Files (x86)/Google/Chrome/Application/chrome.exe %s"
+                    search = takeCommand().lower()
+                    wb.get(chromepath).open_new_tab(search + ".com")
+                    counter = 0
+                elif "logout" in query:
+                    os.system("shutdown -l")
+                elif "temperature" in query:
+                    temperature()
+                elif "shutdown" in query:
+                    os.system("shutdown /s")
+                    counter = 0
+                elif 'decrease volume' in query:
+                    os.system("scripts\\nircmd.exe changesysvolume -13107")
+                elif 'increase volume' in query:
+                    os.system("scripts\\nircmd.exe changesysvolume 13107")
+                elif 'mute' in query:
+                    os.system("scripts\\nircmd.exe mutesysvolume 2")
+                elif 'unmute' in query:
+                    os.system("scripts\\nircmd.exe mutesysvolume 2")
+                elif "pdf" in query:
+                    pdf_reader()
+                elif 'show running apps' in query:
+                    for proc in psutil.process_iter():
+                        try:
+                            processName = proc.name()
+                            processID = proc.pid
+                            tasks[processName] = processID
+                        except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
+                            pass
+                    l = sorted(tasks)
+                    print("--------------------------------------------Running Tasks---------------------------------------------------------------")
+                    for i in l:
+                        print(i,tasks[i])
+                elif 'kill task' in query:
+                    for i in l:
+                        print(i)
+                    speak("which program you want to kill")
+                    kill = takeCommand()
+                    kill_task(kill,l)
+                elif "restart" in query:
+                    os.system("shutdown /r /t 1")
+                    counter = 0
+                elif "play songs" in query:
+                    speak("select folder where songs are located")
+                    root = Tk()
+                    root.withdraw()
+                    songs_dir = filedialog.askdirectory()
+                    songs = os.listdir(songs_dir) # return the list of songs in that directory
+                    os.startfile(os.path.join(songs_dir, songs[0]))
+                    counter = 0
+                elif "remember that" in query:
+                    speak("What should I remember?")
+                    data = takeCommand()
+                    speak("You said me to remember that" + data)
+                    remember = open("data.txt", "w")
+                    remember.write(data)
+                    remember.close()
+                    counter = 0
+                elif "do you remember anything" in query:
+                    remember = open("data.txt", "r")
+                    speak("You said me to remember that " + remember.read()) 
+                    counter = 0
+                elif "hide files" in query:
+                    os.system("attrib +h /s /d")
+                elif "make files visible" in query:
+                    os.system("attrib -h /s /d")
+                        
+                elif 'timer' in query or 'stopwatch' in query:
+
+                    speak("For how many minutes?")
+                    timesec = takeCommand()
+                    l = timesec.split()
+                    if "seconds" in l or "second" in l:
+                        timesec = timesec.replace('seconds','')
+                        timesec = timesec.replace('second','')
+                        timesec = timesec.replace('for','')
+                        timesec = float(timesec)
+                        speak(f'I will remind you in {timesec} seconds')
+                    else:
+                        timesec = timesec.replace('minutes', '')
+                        timesec = timesec.replace('minute', '')
+                        timesec = timesec.replace('for', '')
+                        timesec = float(timesec)
+                        timesec = timesec * 60
+                        speak(f'I will remind you in {timesec} seconds')
+                        sleep(timesec)
+                        speak('Your time has been finished sir')
+                        counter = 0
+                            
+                            
+                        
+                elif "friday screenshot" in query:
+                    screenshot()
+                    speak("Done")
+                    counter = 0
+                elif "cpu" in query:
+                    cpu()
+                    counter = 0
+                elif "joke" in query:
+                    joke()
+                    counter = 0
+                elif "offline" in query:
+                    quit()
+                    counter = 0
+                elif "close window" in query:
+                    speak("closing sir")
+                    keyboard.send("alt+F4, space")
+                    counter = 0
+                elif "save" in query:
+                    speak("saving sir")
+                    keyboard.send("ctrl+s")
+                    counter = 0
+                elif "copy" in query:
+                    speak("copying sir")
+                    keyboard.send("ctrl+c")
+                    counter = 0
+                    
+                elif "paste" in query:
+                    speak("sure")
+                    keyboard.send("ctrl+v")
+                    counter = 0
+                elif "refresh" in query:
+                    speak("sure sir")
+                    keyboard.send("F5")
+                    counter = 0
+                elif "select all" in query:
+                    speak("sure")
+                    keyboard.send("ctrl+a")
+                    counter = 0
+                elif "cut" in query:
+                    speak("ok sir")
+                    keyboard.send("ctrl+x")
+                    counter = 0
+                elif "undo" in query:
+                    speak("ok sir")
+                    keyboard.send("ctrl+z")
+                    counter = 0
+                elif "redo" in query:
+                    speak("ok sir")
+                    keyboard.send("ctrl+y")
+                    counter = 0
+                elif "rename" in query:
+                    speak("ok sir")
+                    keyboard.send("F2")
+                    counter = 0
+                elif "show properties" in query:
+                    speak("just a minute")
+                    keyboard.send("alt+enter")
+                    counter = 0
+                elif "delete" in query:
+                    speak("deleting sir")
+                    keyboard.send("ctrl+d")
+                    counter = 0
+                elif "move" in query:
+                    speak("moving to next tab")
+                    keyboard.send("ctrl+tab")
+                    counter = 0
+                elif "new folder" in query:
+                    speak("ok sir")
+                    keyboard.send("ctrl+shift+n")
+                    counter = 0
+                elif "scroll up" in query:
+                    mouse.wheel(10)
+                    counter = 0
+                elif "scroll down" in query:
+                    mouse.wheel(-10)
+                    counter = 0
+                elif "find" in query:
+                    keyboard.send("ctrl+f")
+                elif 'cd drive' in query:
+                    codePath = r"C:"
+                    os.startfile(codePath)
+                    counter = 0
+                elif 'd drive' in query:
+                    codePath = r"D:"
+                    os.startfile(codePath)
+                    counter = 0
+                elif "show desktop" in query:
+                    keyboard.send("windows+d")
+                    counter = 0
+                elif "open on this" in query:
+                    Mouse.click(Button.left,2)
+                    counter = 0
+                elif 'click' in query:
+                    speak('on what text you want me to click')
+                    click_text = takeCommand()
+                    click_on_text(click_text) 
+                    counter = 0
+                counter+=1
+                print(counter)
+                if counter>10:
+                    speak("say something sir")
+                    counter = 0
             else:
-                speak("looks like app is not installed on your pc")
-        elif 'privacy mode' in query:
-            os.startfile("blue1.exe")
-        elif 'open command prompt' in query:
-            npath = "C:\\Windows\\system32\\cmd.exe"
-            os.startfile(npath)
-        elif 'files' in query:
-            keyboard.send('windows+E')
-        elif 'mail' in query:
-            pyautogui.click(891,1056)
-            counter = 0
-        elif 'notepad' in query:
-            pyautogui.click(655,1068)
-            counter = 0
-        elif 'search system' in query:
-            pyautogui.click(245,1056)
-            counter = 0
-        elif 'windows' in query:
-            pyautogui.click(27,1045)
-            counter = 0 
-        elif "news" in query:
-            news()
-        elif 'open google' in query:
-            speak("Here you go to Google\n")
-            webbrowser.open("google.com")
-            counter = 0
-        elif "date" in query:
-            date()
-            counter = 0
-        elif "wikipedia" in query:
-            speak("Searching...")
-            query = query.replace("wikipedia", "")
-            result = wikipedia.summary(query, sentences=2)
-            print(result)
-            speak(result)
-            counter = 0
-        elif "record screen" in query:
-            record_screen()
-        elif 'type text' in query:
-            speak('what shoud i type?')
-            cmd = takeCommand()
-            pyautogui.write(cmd)
-            counter = 0
-        elif 'show instructions' in query:
-            show_instructions()
-            counter = 0
-
-        elif "how" in query:
-            How()
-
-        
-        elif 'thanks' in query or 'thank you' in query:
-            speak('I am happy I could help you')
-            counter = 0
-        
-        elif 'later' in query:
-            speak('Bye sir, see you next time')
-            quit()
-        elif "send whatsapp message" in query:
-            send_whatsapp_message("+91")
-        elif "send email" in query:
-            try:
-                speak("What message should I send?")
-                content = takeCommand()
-                speak("Please tell the email ID of the receiver")
-                to = takeCommand()
-                sendEmail(to, content)
-                speak("Email has been sent!!")
-                counter = 0
-            except Exception as e:
-                print(e)
-                
-        elif "google search" in query:
-            speak("What should I search?")
-            chromepath = "C:/Program Files (x86)/Google/Chrome/Application/chrome.exe %s"
-            search = takeCommand().lower()
-            wb.get(chromepath).open_new_tab(search + ".com")
-            counter = 0
-        elif "logout" in query:
-            os.system("shutdown -l")
-        elif "temperature" in query:
-            temperature()
-        elif "shutdown" in query:
-            os.system("shutdown /s")
-            counter = 0
-        elif 'decrease volume' in query:
-            os.system("scripts\\nircmd.exe changesysvolume -13107")
-        elif 'increase volume' in query:
-            os.system("scripts\\nircmd.exe changesysvolume 13107")
-        elif 'mute' in query:
-            os.system("scripts\\nircmd.exe mutesysvolume 2")
-        elif 'unmute' in query:
-            os.system("scripts\\nircmd.exe mutesysvolume 2")
-        elif "pdf" in query:
-            pdf_reader()
-        elif 'show running apps' in query:
-            for proc in psutil.process_iter():
-                try:
-                    processName = proc.name()
-                    processID = proc.pid
-                    tasks[processName] = processID
-                except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
-                    pass
-            l = sorted(tasks)
-            print("--------------------------------------------Running Tasks---------------------------------------------------------------")
-            for i in l:
-                print(i,tasks[i])
-        elif 'kill task' in query:
-            for i in l:
-                print(i)
-            speak("which program you want to kill")
-            kill = takeCommand()
-            kill_task(kill,l)
-        elif "restart" in query:
-            os.system("shutdown /r /t 1")
-            counter = 0
-        elif "play songs" in query:
-            speak("select folder where songs are located")
-            root = Tk()
-            root.withdraw()
-            songs_dir = filedialog.askdirectory()
-            songs = os.listdir(songs_dir) # return the list of songs in that directory
-            os.startfile(os.path.join(songs_dir, songs[0]))
-            counter = 0
-        elif "remember that" in query:
-            speak("What should I remember?")
-            data = takeCommand()
-            speak("You said me to remember that" + data)
-            remember = open("data.txt", "w")
-            remember.write(data)
-            remember.close()
-            counter = 0
-        elif "do you remember anything" in query:
-            remember = open("data.txt", "r")
-            speak("You said me to remember that " + remember.read()) 
-            counter = 0
-        elif "hide files" in query:
-            os.system("attrib +h /s /d")
-        elif "make files visible" in query:
-            os.system("attrib -h /s /d")
-            
-        elif 'timer' in query or 'stopwatch' in query:
-
-            speak("For how many minutes?")
-            timesec = takeCommand()
-            l = timesec.split()
-            if "seconds" in l or "second" in l:
-                timesec = timesec.replace('seconds','')
-                timesec = timesec.replace('second','')
-                timesec = timesec.replace('for','')
-                timesec = float(timesec)
-                speak(f'I will remind you in {timesec} seconds')
-            else:
-                timesec = timesec.replace('minutes', '')
-                timesec = timesec.replace('minute', '')
-                timesec = timesec.replace('for', '')
-                timesec = float(timesec)
-                timesec = timesec * 60
-                speak(f'I will remind you in {timesec} seconds')
-
-            sleep(timesec)
-            speak('Your time has been finished sir')
-            counter = 0
-                
-                
-             
-        elif "friday screenshot" in query:
-            screenshot()
-            speak("Done")
-            counter = 0
-        elif "cpu" in query:
-            cpu()
-            counter = 0
-        elif "joke" in query:
-            joke()
-            counter = 0
-        elif "offline" in query:
-            quit()
-            counter = 0
-        elif "close window" in query:
-            speak("closing sir")
-            keyboard.send("alt+F4, space")
-            counter = 0
-        elif "save" in query:
-            speak("saving sir")
-            keyboard.send("ctrl+s")
-            counter = 0
-        elif "copy" in query:
-            speak("copying sir")
-            keyboard.send("ctrl+c")
-            counter = 0
-            
-        elif "paste" in query:
-            speak("sure")
-            keyboard.send("ctrl+v")
-            counter = 0
-        elif "refresh" in query:
-            speak("sure sir")
-            keyboard.send("F5")
-            counter = 0
-        elif "select all" in query:
-            speak("sure")
-            keyboard.send("ctrl+a")
-            counter = 0
-        elif "cut" in query:
-            speak("ok sir")
-            keyboard.send("ctrl+x")
-            counter = 0
-        elif "undo" in query:
-            speak("ok sir")
-            keyboard.send("ctrl+z")
-            counter = 0
-        elif "redo" in query:
-            speak("ok sir")
-            keyboard.send("ctrl+y")
-            counter = 0
-        elif "rename" in query:
-            speak("ok sir")
-            keyboard.send("F2")
-            counter = 0
-        elif "show properties" in query:
-            speak("just a minute")
-            keyboard.send("alt+enter")
-            counter = 0
-        elif "delete" in query:
-            speak("deleting sir")
-            keyboard.send("ctrl+d")
-            counter = 0
-        elif "move" in query:
-            speak("moving to next tab")
-            keyboard.send("ctrl+tab")
-            counter = 0
-        elif "new folder" in query:
-            speak("ok sir")
-            keyboard.send("ctrl+shift+n")
-            counter = 0
-        elif "scroll up" in query:
-            mouse.wheel(10)
-            counter = 0
-        elif "scroll down" in query:
-            mouse.wheel(-10)
-            counter = 0
-        elif "find" in query:
-            keyboard.send("ctrl+f")
-        elif 'cd drive' in query:
-            codePath = r"C:"
-            os.startfile(codePath)
-            counter = 0
-        elif 'd drive' in query:
-            codePath = r"D:"
-            os.startfile(codePath)
-            counter = 0
-        elif "show desktop" in query:
-            keyboard.send("windows+d")
-            counter = 0
-        elif "open on this" in query:
-            Mouse.click(Button.left,2)
-            counter = 0
-        elif 'click' in query:
-            speak('on what text you want me to click')
-            click_text = takeCommand()
-            click_on_text(click_text) 
-            counter = 0
-        counter+=1
-        print(counter)
-        if counter>10:
-            speak("say something sir")
-            counter = 0
+                speak("sorry authentication failed")
+    except Exception as e:
+        print(e)
