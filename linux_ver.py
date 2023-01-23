@@ -296,7 +296,7 @@ def screenshot():
         os.mkdir("Pictures")
     ss_dir = "Pictures/"
     if os.path.exists(ss_dir):
-        img.save("Pictures/ss.png")#give directory of your own
+        img.save("Pictures/ss"+str(random.randrange(1, 10000000000, 1))+".png")#give directory of your own
     else:
         os.mkdir(ss_dir)
 def record_screen():
@@ -386,6 +386,7 @@ if __name__ == "__main__":
     import pyjokes
     import keyboard
     import mouse
+    import random
     import PyPDF2
     import webbrowser
     from pynput.mouse import Listener, Button, Controller
