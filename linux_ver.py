@@ -2,11 +2,16 @@ import subprocess
 import sys
 import random
 import os
+from gtts import gTTS
+
 counter=0
 from requests import get
 tasks = []
 def install(package):
     subprocess.check_call([sys.executable, "-m", "pip", "install", package])
+
+install("SpeechRecognition")
+install("gTTS")
 def check_requirements():
 
     f = open("check.txt", "r")
@@ -36,6 +41,9 @@ def check_requirements():
         install("face-recognition")
         install("SpeechRecognition")
         install("pyttsx3")
+        os.system("sudo apt-get install scrot")
+        os.system("sudo apt-get install portaudio19-dev")
+        os.system("sudo apt-get install python3-tk")
         install("pyaudio") 
         replaced_content = ""
         line = myline.strip()
@@ -50,9 +58,10 @@ import speech_recognition as sr
 r = sr.Recognizer()
 
 
-def speak(audio):
-    x = f'espeak "{audio}"'
-    os.system(x)
+def speak(text):
+    tts = gTTS(text, lang='en')
+    tts.save("output.mp3")
+    os.system("mpg321 output.mp3")
 
 
 instructions = '''instructions(make sure to close this window):
@@ -416,13 +425,16 @@ if __name__ == "__main__":
                     time()
                     counter = 0
                 elif 'wikipedia' in query:
-                    speak('Searching Wikipedia...')
-                    query = query.replace("wikipedia", "")
-                    results = wikipedia.summary(query, sentences = 3)
-                    speak("According to Wikipedia")
-                    print(results)
-                    speak(results)
-                    counter = 0
+                    try:
+                        speak('Searching Wikipedia...')
+                        query = query.replace("wikipedia", "")
+                        results = wikipedia.summary(query, sentences = 3)
+                        speak("According to Wikipedia")
+                        print(results)
+                        speak(results)
+                        counter = 0
+                    except:
+                        speak("sorry resultnot found on wikipedia")
                 elif 'open youtube' in query:
                     speak("Here you go to Youtube\n")
                     webbrowser.open("youtube.com")
